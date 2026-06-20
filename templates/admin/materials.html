@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materials | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-file-upload"></i> Course Materials</h1>
+        <a href="{{ url_for('admin_upload_material') }}" class="btn-primary-sm">
+            <i class="fas fa-upload"></i> Upload New Material
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas fa-info-circle"></i> {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if materials %}
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Course</th>
+                        <th>File Name</th>
+                        <th>Type</th>
+                        <th>Downloads</th>
+                        <th>Uploaded</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in materials %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <strong style="color:#1B5E20;">
+                                {{ m.course_code }}
+                            </strong><br>
+                            <small style="color:#616161;">
+                                {{ m.course_title }}
+                            </small>
+                        </td>
+                        <td>
+                            <i class="fas fa-file-pdf" style="color:#C62828;"></i>
+                            {{ m.file_name }}
+                        </td>
+                        <td>
+                            <span class="type-pill type-{{ m.material_type|lower|replace(' ','') }}">
+                                {{ m.material_type }}
+                            </span>
+                        </td>
+                        <td>
+                            <i class="fas fa-download" style="color:#1B5E20;"></i>
+                            {{ m.download_count }}
+                        </td>
+                        <td style="font-size:0.8rem; color:#616161;">
+                            {{ m.uploaded_at.strftime('%d %b %Y') }}
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="{{ url_for('download_file', filename=m.file_path) }}"
+                                   class="btn-edit">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                                <a href="{{ url_for('admin_delete_material', id=m.id) }}"
+                                   class="btn-delete"
+                                   onclick="return confirm('Delete this material?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-file-upload"></i>
+            <h3>No Materials Uploaded Yet</h3>
+            <p>Click "Upload New Material" to add your first file.</p>
+            <a href="{{ url_for('admin_upload_material') }}"
+               class="btn-primary-sm" style="margin-top:16px; display:inline-flex;">
+                <i class="fas fa-upload"></i> Upload First Material
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

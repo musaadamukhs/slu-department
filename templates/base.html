@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>{% block title %}SLU — Agric Economics & Extension{% endblock %}</title>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-top">
+            <div class="header-logo-area">
+                <div class="logo-placeholder">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <div class="header-text">
+                    <span class="university-name">Sule Lamido University, Kafin Hausa</span>
+                    <span class="dept-name">Department of Agricultural Economics & Extension</span>
+                </div>
+            </div>
+            <div class="header-badge">
+                <span>Est. 2013</span>
+            </div>
+        </div>
+
+        <nav class="main-nav">
+    <div class="nav-links">
+        <a href="{{ url_for('home') }}" class="nav-link">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="{{ url_for('staff_directory') }}" class="nav-link">
+            <i class="fas fa-users"></i> Staff Directory
+        </a>
+        <a href="{{ url_for('courseware') }}" class="nav-link">
+            <i class="fas fa-book-open"></i> E-Courseware
+        </a>
+        <a href="{{ url_for('announcements') }}" class="nav-link">
+            <i class="fas fa-bullhorn"></i> Announcements
+        </a>
+        <a href="{{ url_for('contact') }}" class="nav-link">
+            <i class="fas fa-envelope"></i> Contact
+        </a>
+    </div>
+    <a href="/admin" class="btn-admin">
+        <i class="fas fa-lock"></i> Admin Login
+    </a>
+</nav>
+
+    </header>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="{{ url_for('staff_directory') }}">Staff Directory</a>
+                <a href="{{ url_for('courseware') }}">E-Courseware</a>
+                <a href="#">Announcements</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Kafin Hausa, Jigawa State</p>
+                <p><i class="fas fa-envelope"></i> agric@sluk.edu.ng</p>
+                <p><i class="fas fa-phone"></i> +234 800 000 0000</p>
+            </div>
+            <div class="footer-section">
+                <h4>About</h4>
+                <p>Dedicated to excellence in agricultural education, research, and community extension services.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 SLU Department of Agricultural Economics & Extension.
+               Built with ❤️ by <strong>Musa Adamu</strong>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

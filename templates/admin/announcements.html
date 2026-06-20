@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-bullhorn"></i> Announcements</h1>
+        <a href="{{ url_for('admin_add_announcement') }}" class="btn-primary-sm">
+            <i class="fas fa-plus"></i> Post Announcement
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas fa-info-circle"></i> {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if announcements %}
+        <div class="announcements-list">
+            {% for a in announcements %}
+            <div class="announcement-card {{ 'pinned' if a.is_pinned else '' }}">
+                <div class="announcement-header">
+                    <div>
+                        {% if a.is_pinned %}
+                        <span class="pin-badge">
+                            <i class="fas fa-thumbtack"></i> Pinned
+                        </span>
+                        {% endif %}
+                        <h3>{{ a.title }}</h3>
+                        <span class="announcement-date">
+                            <i class="fas fa-clock"></i>
+                            {{ a.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                        </span>
+                    </div>
+                    <a href="{{ url_for('admin_delete_announcement', id=a.id) }}"
+                       class="btn-delete"
+                       onclick="return confirm('Delete this announcement?')">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+                <p class="announcement-content">{{ a.content }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-bullhorn"></i>
+            <h3>No Announcements Yet</h3>
+            <p>Click "Post Announcement" to add your first one.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}Home | SLU Agric Economics & Extension{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="hero-content">
+        <span class="hero-badge">Welcome to the Department</span>
+        <h1 class="hero-title">
+            Agricultural Economics <br>& Extension
+        </h1>
+        <p class="hero-subtitle">
+            Empowering students with knowledge, skills, and values
+            for sustainable agricultural development in Nigeria and beyond.
+        </p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('staff_directory') }}" class="btn-primary">
+                <i class="fas fa-users"></i> Meet Our Staff
+            </a>
+            <a href="{{ url_for('courseware') }}" class="btn-secondary">
+                <i class="fas fa-book-open"></i> Browse Courseware
+            </a>
+        </div>
+    </div>
+    <div class="hero-stats">
+        <div class="stat-card">
+            <span class="stat-number">{{ staff_count }}+</span>
+            <span class="stat-label">Academic Staff</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ course_count }}+</span>
+            <span class="stat-label">Courses Available</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ material_count }}+</span>
+            <span class="stat-label">Study Materials</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">1000+</span>
+            <span class="stat-label">Students Served</span>
+        </div>
+    </div>
+</section>
+
+<!-- ===== QUICK ACCESS ===== -->
+<section class="quick-access">
+    <h2 class="section-title">What are you looking for?</h2>
+    <p class="section-subtitle">Get to what you need in one click</p>
+    <div class="access-grid">
+        <a href="{{ url_for('staff_directory') }}" class="access-card">
+            <div class="access-icon" style="background:#E8F5E9;">
+                <i class="fas fa-user-tie" style="color:#1B5E20;"></i>
+            </div>
+            <h3>Staff Directory</h3>
+            <p>Find lecturers, contacts, specializations and research work</p>
+            <span class="access-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a href="{{ url_for('courseware') }}" class="access-card">
+            <div class="access-icon" style="background:#FFF8E1;">
+                <i class="fas fa-file-pdf" style="color:#F9A825;"></i>
+            </div>
+            <h3>Lecture Notes</h3>
+            <p>Download course materials, slides and notes by level</p>
+            <span class="access-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a href="{{ url_for('courseware') }}" class="access-card">
+            <div class="access-icon" style="background:#E3F2FD;">
+                <i class="fas fa-file-alt" style="color:#1565C0;"></i>
+            </div>
+            <h3>Past Questions</h3>
+            <p>Access previous semester examination questions for revision</p>
+            <span class="access-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a href="{{ url_for('announcements') }}" class="access-card">
+            <div class="access-icon" style="background:#FCE4EC;">
+                <i class="fas fa-bullhorn" style="color:#880E4F;"></i>
+            </div>
+            <h3>Announcements</h3>
+            <p>Stay updated with department news and exam timetables</p>
+            <span class="access-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+    </div>
+</section>
+
+<!-- ===== ANNOUNCEMENTS SECTION ===== -->
+{% if announcements %}
+<section class="home-announcements">
+    <div class="home-announcements-container">
+        <div class="section-header-row">
+            <div>
+                <h2 class="section-title" style="text-align:left;">
+                    Latest Announcements
+                </h2>
+                <p class="section-subtitle" style="text-align:left;">
+                    Stay up to date with department news
+                </p>
+            </div>
+            <a href="{{ url_for('announcements') }}" class="btn-view-all">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="home-announcements-grid">
+            {% for a in announcements %}
+            <div class="home-announcement-card {{ 'pinned' if a.is_pinned else '' }}">
+                {% if a.is_pinned %}
+                <span class="pin-tag">
+                    <i class="fas fa-thumbtack"></i> Pinned
+                </span>
+                {% endif %}
+                <h3>{{ a.title }}</h3>
+                <p>{{ a.content[:150] }}{% if a.content|length > 150 %}...{% endif %}</p>
+                <span class="ann-date">
+                    <i class="fas fa-clock"></i>
+                    {{ a.created_at.strftime('%d %b %Y') }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

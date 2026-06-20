@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block title %}Staff Directory | SLU Agric{% endblock %}
+
+{% block content %}
+
+<!-- ===== PAGE HERO ===== -->
+<section class="page-hero">
+    <div class="page-hero-content">
+        <h1><i class="fas fa-users"></i> Staff Directory</h1>
+        <p>Meet the dedicated academic and non-academic staff of the Department</p>
+    </div>
+</section>
+
+<!-- ===== SEARCH & FILTER BAR ===== -->
+<section class="filter-section">
+    <div class="filter-container">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by name, title or specialization..."
+                onkeyup="filterStaff()"
+            >
+        </div>
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterByRank('all', this)">
+                All Staff
+            </button>
+            <button class="filter-btn" onclick="filterByRank('professor', this)">
+                Professors
+            </button>
+            <button class="filter-btn" onclick="filterByRank('lecturer', this)">
+                Lecturers
+            </button>
+            <button class="filter-btn" onclick="filterByRank('non-academic', this)">
+                Non-Academic
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ===== HOD SPOTLIGHT ===== -->
+<section class="hod-section">
+    {% if hod %}
+    <div class="hod-card">
+        <div class="hod-photo-area">
+            <div class="hod-photo-placeholder">
+                <i class="fas fa-user-tie"></i>
+            </div>
+        </div>
+        <div class="hod-info">
+            <span class="hod-badge">Head of Department</span>
+            <h2 class="hod-name">{{ hod.full_name }}</h2>
+            <p class="hod-title">{{ hod.title }} — {{ hod.specialization }}</p>
+            <p class="hod-message">
+                "Our department is committed to producing graduates who are not only
+                academically sound but also practically equipped to transform Nigeria's
+                agricultural sector through innovation, research, and community service."
+            </p>
+            <div class="hod-contacts">
+                <span><i class="fas fa-envelope"></i> {{ hod.email }}</span>
+                <span><i class="fas fa-phone"></i> {{ hod.phone }}</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<!-- ===== STAFF GRID ===== -->
+<section class="staff-section">
+    <div class="staff-container">
+        <h2 class="section-title">Academic Staff</h2>
+        <p class="section-subtitle">Our qualified and experienced teaching faculty</p>
+
+        <div class="staff-grid" id="staffGrid">
+
+            {% for member in staff_list %}
+            <div class="staff-card" data-rank="{{ member.staff_rank }}">
+                <div class="staff-card-top">
+                    <div class="staff-photo-placeholder">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="rank-badge rank-{{ member.staff_rank }}">
+                        {{ member.title }}
+                    </span>
+                </div>
+                <div class="staff-card-body">
+                    <h3 class="staff-name">{{ member.full_name }}</h3>
+                    <p class="staff-title">{{ member.title }}</p>
+                    <p class="staff-spec">
+                        <i class="fas fa-flask"></i> {{ member.specialization }}
+                    </p>
+                    <div class="staff-contacts">
+                        <p><i class="fas fa-envelope"></i> {{ member.email }}</p>
+                        <p><i class="fas fa-phone"></i> {{ member.phone }}</p>
+                    </div>
+                </div>
+                <div class="staff-card-footer">
+                    <a href="#" class="btn-view-profile">
+                        View Profile <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+    function filterStaff() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.querySelectorAll('.staff-card');
+        cards.forEach(card => {
+            let text = card.innerText.toLowerCase();
+            card.style.display = text.includes(input) ? 'block' : 'none';
+        });
+    }
+
+    function filterByRank(rank, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('active');
+        });
+        btn.classList.add('active');
+
+        let cards = document.querySelectorAll('.staff-card');
+        cards.forEach(card => {
+            if (rank === 'all') {
+                card.style.display = 'block';
+            } else {
+                card.style.display =
+                    card.dataset.rank === rank ? 'block' : 'none';
+            }
+        });
+    }
+</script>
+
+{% endblock %}

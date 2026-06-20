@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Staff | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-user-plus"></i> Add New Staff</h1>
+        <a href="{{ url_for('admin_staff') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Staff List
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="form-card">
+            <form method="POST" action="{{ url_for('admin_add_staff') }}">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" name="full_name"
+                               placeholder="e.g. Dr. Amina Yusuf" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Title *</label>
+                        <select name="title" required>
+                            <option value="">-- Select Title --</option>
+                            <option>Professor</option>
+                            <option>Associate Professor</option>
+                            <option>Senior Lecturer</option>
+                            <option>Lecturer I</option>
+                            <option>Lecturer II</option>
+                            <option>Assistant Lecturer</option>
+                            <option>Graduate Assistant</option>
+                            <option>Senior Admin Officer</option>
+                            <option>Admin Officer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Rank *</label>
+                        <select name="staff_rank" required>
+                            <option value="">-- Select Rank --</option>
+                            <option value="professor">Professor</option>
+                            <option value="lecturer">Lecturer</option>
+                            <option value="non-academic">Non-Academic</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Specialization *</label>
+                        <input type="text" name="specialization"
+                               placeholder="e.g. Agricultural Finance" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email"
+                               placeholder="e.g. a.yusuf@sluk.edu.ng">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" name="phone"
+                               placeholder="e.g. 08012345678">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Bio / About</label>
+                    <textarea name="bio" rows="4"
+                        placeholder="Write a short biography about this staff member..."></textarea>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" name="is_hod" id="is_hod">
+                    <label for="is_hod">
+                        Set as <strong>Head of Department (HOD)</strong>
+                        <span style="color:#616161; font-weight:400;">
+                            — This will remove HOD status from the current HOD
+                        </span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Save Staff Member
+                    </button>
+                    <a href="{{ url_for('admin_staff') }}" class="btn-cancel">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

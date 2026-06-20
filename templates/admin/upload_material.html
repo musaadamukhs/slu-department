@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Material | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-upload"></i> Upload Course Material</h1>
+        <a href="{{ url_for('admin_materials') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Materials
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="form-card">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-info-circle"></i> {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Allowed file types notice -->
+            <div class="upload-notice">
+                <i class="fas fa-info-circle"></i>
+                <span>
+                    Allowed file types: 
+                    <strong>PDF, PPT, PPTX, DOC, DOCX, XLS, XLSX</strong>
+                </span>
+            </div>
+
+            <form method="POST" 
+                  action="{{ url_for('admin_upload_material') }}"
+                  enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label>Select Course *</label>
+                    <select name="course_id" required>
+                        <option value="">-- Select Course --</option>
+                        {% for course in courses %}
+                        <option value="{{ course.id }}">
+                            {{ course.course_code }} — 
+                            {{ course.course_title }} 
+                            ({{ course.level }}L)
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Material Type *</label>
+                    <select name="material_type" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="Lecture Notes">Lecture Notes</option>
+                        <option value="Slides">Slides / Presentation</option>
+                        <option value="Past Questions">Past Questions</option>
+                        <option value="Assignment">Assignment</option>
+                        <option value="Reference">Reference Material</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Choose File *</label>
+                    <div class="file-upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to choose a file or drag and drop here</p>
+                        <span>PDF, PPT, DOC, XLS (Max 16MB)</span>
+                        <input 
+                            type="file" 
+                            name="file" 
+                            id="fileInput"
+                            accept=".pdf,.ppt,.pptx,.doc,.docx,.xls,.xlsx"
+                            required
+                            onchange="showFileName(this)"
+                        >
+                    </div>
+                    <div class="file-selected" id="fileSelected" style="display:none;">
+                        <i class="fas fa-file-check"></i>
+                        <span id="selectedFileName"></span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-upload"></i> Upload Material
+                    </button>
+                    <a href="{{ url_for('admin_materials') }}" class="btn-cancel">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show selected file name
+    function showFileName(input) {
+        if (input.files && input.files[0]) {
+            let fileName = input.files[0].name;
+            let fileSize = (input.files[0].size / 1024 / 1024).toFixed(2);
+
+            document.getElementById('selectedFileName').textContent =
+                fileName + ' (' + fileSize + ' MB)';
+            document.getElementById('fileSelected').style.display = 'flex';
+            document.getElementById('uploadArea').style.borderColor = '#2E7D32';
+            document.getElementById('uploadArea').style.background = '#E8F5E9';
+        }
+    }
+
+    // Drag and drop
+    let uploadArea = document.getElementById('uploadArea');
+
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#2E7D32';
+        uploadArea.style.background = '#E8F5E9';
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = '#E0E0E0';
+        uploadArea.style.background = '#FAFAFA';
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        let files = e.dataTransfer.files;
+        document.getElementById('fileInput').files = files;
+        showFileName(document.getElementById('fileInput'));
+    });
+</script>
+
+</body>
+</html>

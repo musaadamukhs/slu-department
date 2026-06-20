@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}E-Courseware | SLU Agric{% endblock %}
+
+{% block content %}
+
+<!-- ===== PAGE HERO ===== -->
+<section class="page-hero">
+    <div class="page-hero-content">
+        <h1><i class="fas fa-book-open"></i> E-Courseware Library</h1>
+        <p>Download lecture notes, slides, past questions and study materials</p>
+    </div>
+</section>
+
+<!-- ===== STATS BAR ===== -->
+<section class="courseware-stats">
+    <div class="cw-stats-container">
+        <div class="cw-stat">
+            <i class="fas fa-book-open"></i>
+            <span class="cw-stat-number">{{ courses|length }}</span>
+            <span class="cw-stat-label">Total Courses</span>
+        </div>
+        <div class="cw-stat">
+            <i class="fas fa-file-pdf"></i>
+            <span class="cw-stat-number">
+                {{ courses|sum(attribute='material_count') }}
+            </span>
+            <span class="cw-stat-label">Materials Available</span>
+        </div>
+        <div class="cw-stat">
+            <i class="fas fa-layer-group"></i>
+            <span class="cw-stat-number">5</span>
+            <span class="cw-stat-label">Levels Covered</span>
+        </div>
+        <div class="cw-stat">
+            <i class="fas fa-download"></i>
+            <span class="cw-stat-number">Free</span>
+            <span class="cw-stat-label">All Downloads</span>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SEARCH & FILTER ===== -->
+<section class="filter-section">
+    <div class="filter-container">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="cwSearch"
+                   placeholder="Search by course title or code..."
+                   onkeyup="searchCourseware()">
+        </div>
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterByLevel('all', this)">
+                All Levels
+            </button>
+            {% for level in [100, 200, 300, 400, 500] %}
+            <button class="filter-btn" onclick="filterByLevel('{{ level }}', this)">
+                {{ level }} Level
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ===== COURSES ===== -->
+<section class="courseware-section">
+    <div class="courseware-container">
+
+        {% if courses %}
+        <div class="courses-grid" id="coursesGrid">
+            {% for course in courses %}
+            <div class="course-card" data-level="{{ course.level }}">
+                <div class="course-card-header">
+                    <div class="course-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="course-meta">
+                        <span class="course-code">{{ course.course_code }}</span>
+                        <span class="course-semester">
+                            {{ course.semester }} —
+                            {{ course.level }}L
+                        </span>
+                    </div>
+                </div>
+                <div class="course-card-body">
+                    <h3 class="course-title">{{ course.course_title }}</h3>
+                    <p class="course-lecturer">
+                        <i class="fas fa-user-tie"></i>
+                        {{ course.lecturer_name or 'Not Assigned' }}
+                    </p>
+                    {% if course.description %}
+                    <p style="font-size:0.82rem; color:#616161; margin-bottom:12px;">
+                        {{ course.description[:100] }}...
+                    </p>
+                    {% endif %}
+
+                    <!-- Materials Download Buttons -->
+                    <div class="course-materials">
+                        {% if course.material_count > 0 %}
+                        <a href="{{ url_for('course_materials', course_id=course.id) }}"
+                           class="material-btn material-notes">
+                            <i class="fas fa-download"></i>
+                            Download Materials ({{ course.material_count }})
+                        </a>
+                        {% else %}
+                        <span class="no-materials">
+                            <i class="fas fa-clock"></i> Materials coming soon
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="course-card-footer">
+                    <span class="download-count">
+                        <i class="fas fa-file-alt"></i>
+                        {{ course.material_count }} material(s)
+                    </span>
+                    <span class="material-count">
+                        {{ course.level }}L
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div style="text-align:center; padding:60px 20px; color:#616161;">
+            <i class="fas fa-book-open" 
+               style="font-size:3rem; margin-bottom:16px; display:block; color:#E0E0E0;">
+            </i>
+            <h3>No courses available yet</h3>
+            <p>Check back soon — materials are being uploaded.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<script>
+    function searchCourseware() {
+        let input = document.getElementById('cwSearch').value.toLowerCase();
+        let cards = document.querySelectorAll('.course-card');
+        cards.forEach(card => {
+            let text = card.innerText.toLowerCase();
+            card.style.display = text.includes(input) ? 'block' : 'none';
+        });
+    }
+
+    function filterByLevel(level, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('active');
+        });
+        btn.classList.add('active');
+
+        let cards = document.querySelectorAll('.course-card');
+        cards.forEach(card => {
+            if (level === 'all') {
+                card.style.display = 'block';
+            } else {
+                card.style.display =
+                    card.dataset.level === level ? 'block' : 'none';
+            }
+        });
+    }
+</script>
+
+{% endblock %}

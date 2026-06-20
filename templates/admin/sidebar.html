@@ -1,0 +1,50 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+            <h2>SLU Admin Panel</h2>
+        </div>
+        <p>Agric Economics & Extension</p>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-title">Main</div>
+        <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+
+        <div class="nav-section-title">Management</div>
+        <a href="{{ url_for('admin_staff') }}" class="sidebar-link">
+            <i class="fas fa-users"></i> Manage Staff
+        <a href="{{ url_for('admin_courses') }}" class="sidebar-link">
+    <i class="fas fa-book-open"></i> Manage Courses
+</a>
+        <a href="{{ url_for('admin_materials') }}" class="sidebar-link">
+    <i class="fas fa-file-upload"></i> Upload Materials
+</a>
+        </a>
+        <a href="{{ url_for('admin_announcements') }}" class="sidebar-link">
+            <i class="fas fa-bullhorn"></i> Announcements
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="{{ url_for('home') }}" class="sidebar-link" target="_blank">
+            <i class="fas fa-external-link-alt"></i> View Public Site
+        </a>
+        <a href="{{ url_for('admin_logout') }}" class="sidebar-link">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="admin-info">
+            <div class="admin-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div>
+                <div class="admin-name">{{ session.admin_name }}</div>
+                <div class="admin-role">{{ session.admin_role }}</div>
+            </div>
+        </div>
+    </div>
+</aside>

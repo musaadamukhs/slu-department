@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Announcement | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-bullhorn"></i> Post Announcement</h1>
+        <a href="{{ url_for('admin_announcements') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="form-card">
+            <form method="POST" action="{{ url_for('admin_add_announcement') }}">
+
+                <div class="form-group">
+                    <label>Announcement Title *</label>
+                    <input type="text" name="title"
+                           placeholder="e.g. Exam Timetable Released" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Content *</label>
+                    <textarea name="content" rows="6"
+                        placeholder="Write the full announcement here..." required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiry Date (optional)</label>
+                        <input type="date" name="expires_at">
+                    </div>
+                    <div class="form-group" style="justify-content:center;">
+                        <div class="form-check" style="margin-top:30px;">
+                            <input type="checkbox" name="is_pinned" id="is_pinned">
+                            <label for="is_pinned">
+                                <strong>Pin this announcement</strong>
+                                — shows at the top
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i> Post Announcement
+                    </button>
+                    <a href="{{ url_for('admin_announcements') }}" class="btn-cancel">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

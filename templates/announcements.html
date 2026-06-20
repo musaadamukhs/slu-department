@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Announcements | SLU Agric{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="page-hero-content">
+        <h1><i class="fas fa-bullhorn"></i> Announcements</h1>
+        <p>Stay updated with the latest news from the department</p>
+    </div>
+</section>
+
+<section class="announcements-public">
+    <div class="announcements-public-container">
+
+        {% if announcements %}
+        <div class="public-announcements-list">
+            {% for a in announcements %}
+            <div class="public-announcement-card
+                        {{ 'pinned' if a.is_pinned else '' }}">
+                <div class="public-ann-header">
+                    <div>
+                        {% if a.is_pinned %}
+                        <span class="pin-tag">
+                            <i class="fas fa-thumbtack"></i> Pinned
+                        </span>
+                        {% endif %}
+                        <h2>{{ a.title }}</h2>
+                        <span class="ann-date">
+                            <i class="fas fa-clock"></i>
+                            {{ a.created_at.strftime('%A, %d %B %Y — %I:%M %p') }}
+                        </span>
+                    </div>
+                </div>
+                <div class="public-ann-content">
+                    {{ a.content }}
+                </div>
+                {% if a.expires_at %}
+                <div class="ann-expiry">
+                    <i class="fas fa-calendar-times"></i>
+                    Expires: {{ a.expires_at.strftime('%d %B %Y') }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div style="text-align:center; padding:60px 20px; color:#616161;">
+            <i class="fas fa-bullhorn"
+               style="font-size:3rem; display:block;
+                      margin-bottom:16px; color:#E0E0E0;">
+            </i>
+            <h3>No announcements at this time</h3>
+            <p>Check back later for department updates.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-book-open"></i> Manage Courses</h1>
+        <a href="{{ url_for('admin_add_course') }}" class="btn-primary-sm">
+            <i class="fas fa-plus"></i> Add New Course
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas fa-info-circle"></i> {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if courses %}
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Course Code</th>
+                        <th>Course Title</th>
+                        <th>Level</th>
+                        <th>Semester</th>
+                        <th>Lecturer</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <strong style="color:#1B5E20;">
+                                {{ course.course_code }}
+                            </strong>
+                        </td>
+                        <td>{{ course.course_title }}</td>
+                        <td>
+                            <span class="level-pill">
+                                {{ course.level }}L
+                            </span>
+                        </td>
+                        <td>{{ course.semester }}</td>
+                        <td>
+                            {{ course.lecturer_name or '— Not assigned' }}
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="{{ url_for('admin_edit_course', id=course.id) }}"
+                                   class="btn-edit">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{{ url_for('admin_delete_course', id=course.id) }}"
+                                   class="btn-delete"
+                                   onclick="return confirm('Delete {{ course.course_code }}?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-book-open"></i>
+            <h3>No Courses Yet</h3>
+            <p>Click "Add New Course" to add your first course.</p>
+            <a href="{{ url_for('admin_add_course') }}" 
+               class="btn-primary-sm" style="margin-top:16px; display:inline-flex;">
+                <i class="fas fa-plus"></i> Add First Course
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>
