@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Gallery | SLU Agric{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+<div class="page-hero-content">
+<h1><i class="fas fa-images"></i> Photo Gallery</h1>
+<p>Campus life, facilities, and departmental activities</p>
+</div>
+</section>
+
+<section class="filter-section">
+<div class="filter-container">
+<div class="filter-buttons">
+<a href="{{ url_for('gallery') }}" class="filter-btn {{ 'active' if not current_dept else '' }}">All Departments</a>
+{% for d in departments %}
+<a href="{{ url_for('gallery') }}?dept={{ d.slug }}" class="filter-btn {{ 'active' if current_dept and current_dept.slug == d.slug else '' }}">{{ d.name }}</a>
+{% endfor %}
+</div>
+</div>
+</section>
+
+<section class="lab-detail-section">
+<div class="lab-detail-container">
+{% if photos %}
+<div class="lab-gallery-grid">
+{% for p in photos %}
+<div class="lab-gallery-item" onclick="openLightbox('{{ url_for('static', filename='images/gallery/' + p.photo_path) }}', '{{ p.title or '' }}')">
+<img src="{{ url_for('static', filename='images/gallery/' + p.photo_path) }}" alt="{{ p.title or '' }}">
+{% if p.title %}<div class="lab-gallery-caption">{{ p.title }}</div>{% endif %}
+</div>
+{% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+<i class="fas fa-images"></i>
+<h3>No Photos Yet</h3>
+<p>Check back soon for campus and event photos.</p>
+</div>
+{% endif %}
+</div>
+</section>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+<span class="lightbox-close">&times;</span>
+<img id="lightbox-img" src="">
+<p id="lightbox-caption"></p>
+</div>
+
+<script>
+function openLightbox(src, caption) {
+document.getElementById('lightbox-img').src = src;
+document.getElementById('lightbox-caption').textContent = caption;
+document.getElementById('lightbox').style.display = 'flex';
+}
+function closeLightbox() {
+document.getElementById('lightbox').style.display = 'none';
+}
+</script>
+
+{% endblock %}

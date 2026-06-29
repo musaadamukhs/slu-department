@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Laboratories | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-flask"></i> Manage Laboratories</h1>
+        <a href="{{ url_for('admin_add_lab') }}" class="btn-primary-sm">
+            <i class="fas fa-plus"></i> Add New Laboratory
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas fa-info-circle"></i> {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if labs %}
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lab in labs %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ lab.name }}</strong></td>
+                        <td>{{ lab.department_name or '—' }}</td>
+                        <td>{{ lab.lab_type }}</td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="{{ url_for('admin_lab_photos', lab_id=lab.id) }}" class="btn-edit">
+                                    <i class="fas fa-images"></i> Photos
+                                </a>
+                                <a href="{{ url_for('admin_edit_lab', id=lab.id) }}" class="btn-edit">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{{ url_for('admin_delete_lab', id=lab.id) }}"
+                                   class="btn-delete"
+                                   onclick="return confirm('Delete {{ lab.name }}? This also removes its photos.')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-flask"></i>
+            <h3>No Laboratories Yet</h3>
+            <p>Click "Add New Laboratory" to add your first one.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

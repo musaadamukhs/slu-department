@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Departmental Officers | SLU Agric{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="page-hero-content">
+        <h1><i class="fas fa-id-badge"></i> Departmental Officers</h1>
+        <p>Key administrative roles and responsibilities across the Faculty</p>
+    </div>
+</section>
+
+<section class="filter-section">
+    <div class="filter-container">
+        <div class="filter-buttons">
+            <a href="{{ url_for('officers') }}"
+               class="filter-btn {{ 'active' if not current_dept else '' }}">
+                All Departments
+            </a>
+            {% for d in departments %}
+            <a href="{{ url_for('officers') }}?dept={{ d.slug }}"
+               class="filter-btn {{ 'active' if current_dept and current_dept.slug == d.slug else '' }}">
+                {{ d.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="officers-section">
+    <div class="officers-container">
+
+        {% if roles %}
+        <div class="officers-grid">
+            {% for r in roles %}
+            <div class="officer-card">
+                <div class="officer-photo">
+                    {% if r.photo and r.photo != 'default.jpg' %}
+                    <img src="{{ url_for('static', filename='images/staff/' + r.photo) }}">
+                    {% else %}
+                    <i class="fas fa-user"></i>
+                    {% endif %}
+                </div>
+                <div class="officer-info">
+                    <span class="officer-role-badge">
+                        {{ r.role_name }}{% if r.level %} &mdash; {{ r.level }} Level{% endif %}
+                    </span>
+                    <h3>{{ r.full_name }}</h3>
+                    <p class="officer-title">{{ r.title }}</p>
+                    {% if not current_dept %}
+                    <p class="officer-dept"><i class="fas fa-building"></i> {{ r.department_name }}</p>
+                    {% endif %}
+                    {% if r.academic_session %}
+                    <span class="officer-session">{{ r.academic_session }} Session</span>
+                    {% endif %}
+                    <div class="officer-contacts">
+                        {% if r.email %}<span><i class="fas fa-envelope"></i> {{ r.email }}</span>{% endif %}
+                        {% if r.phone %}<span><i class="fas fa-phone"></i> {{ r.phone }}</span>{% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-id-badge"></i>
+            <h3>No Officers Assigned Yet</h3>
+            <p>Role assignments will be published here once finalized.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

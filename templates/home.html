@@ -3,10 +3,21 @@
 
 {% block content %}
 
-<!-- ===== HERO ===== -->
-<section class="hero">
+<!-- ===== HERO BANNER WITH ROTATING SLIDER ===== -->
+<section class="hero-slider">
+    <div class="hero-slides">
+        <div class="hero-slide active" style="background-image: url('{{ url_for('static', filename='images/hero/hero-1.jpg') }}');"></div>
+        <div class="hero-slide" style="background-image: url('{{ url_for('static', filename='images/hero/hero-2.jpg') }}');"></div>
+        <div class="hero-slide" style="background-image: url('{{ url_for('static', filename='images/hero/hero-3.jpg') }}');"></div>
+        <div class="hero-slide" style="background-image: url('{{ url_for('static', filename='images/hero/hero-4.jpg') }}');"></div>
+    </div>
+
+    <div class="hero-overlay"></div>
+
     <div class="hero-content">
-        <span class="hero-badge">Welcome to the Department</span>
+        <span class="hero-badge">
+            {% if faculty %}{{ faculty.name }}{% else %}Welcome to the Department{% endif %}
+        </span>
         <h1 class="hero-title">
             Agricultural Economics <br>& Extension
         </h1>
@@ -23,6 +34,7 @@
             </a>
         </div>
     </div>
+
     <div class="hero-stats">
         <div class="stat-card">
             <span class="stat-number">{{ staff_count }}+</span>
@@ -37,11 +49,45 @@
             <span class="stat-label">Study Materials</span>
         </div>
         <div class="stat-card">
-            <span class="stat-number">1000+</span>
-            <span class="stat-label">Students Served</span>
+            <span class="stat-number">4</span>
+            <span class="stat-label">Departments</span>
         </div>
     </div>
+
+    <!-- Slide indicator dots -->
+    <div class="hero-dots">
+        <span class="hero-dot active" onclick="goToSlide(0)"></span>
+        <span class="hero-dot" onclick="goToSlide(1)"></span>
+        <span class="hero-dot" onclick="goToSlide(2)"></span>
+        <span class="hero-dot" onclick="goToSlide(3)"></span>
+    </div>
 </section>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+
+    function showSlide(index) {
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        showSlide(currentSlide);
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    // Auto-rotate every 5 seconds
+    setInterval(nextSlide, 5000);
+</script>
 
 <!-- ===== QUICK ACCESS ===== -->
 <section class="quick-access">

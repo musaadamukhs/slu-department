@@ -22,7 +22,13 @@
 
     <div class="dashboard-content">
         <div class="form-card">
-            <form method="POST" action="{{ url_for('admin_add_staff') }}">
+            <form method="POST" action="{{ url_for('admin_add_staff') }}" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label>Staff Photo (passport-style)</label>
+                    <input type="file" name="photo" accept=".jpg,.jpeg,.png,.webp">
+                    <small style="color:#9E9E9E; font-size:0.78rem;">JPG, PNG or WEBP. Square photos work best.</small>
+                </div>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -81,6 +87,35 @@
                     <label>Bio / About</label>
                     <textarea name="bio" rows="4"
                         placeholder="Write a short biography about this staff member..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Academic Qualifications</label>
+                    <textarea name="qualifications" rows="3"
+                        placeholder="e.g. PhD Agricultural Economics (ABU Zaria), MSc..., BSc..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Research Interests</label>
+                    <textarea name="research_interests" rows="3"
+                        placeholder="e.g. Farm management, rural finance, agricultural policy"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Publications</label>
+                    <textarea name="publications" rows="5"
+                        placeholder="List publications, one per line"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Office Location</label>
+                        <input type="text" name="office_location" placeholder="e.g. Block A, Room 12">
+                    </div>
+                    <div class="form-group">
+                        <label>ORCID / Research ID</label>
+                        <input type="text" name="orcid" placeholder="e.g. 0000-0001-2345-6789">
+                    </div>
                 </div>
 
                 <div class="form-check">

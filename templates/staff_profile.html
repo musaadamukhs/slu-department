@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}{{ member.full_name }} | SLU Agric{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="page-hero-content">
+        <h1><i class="fas fa-user"></i> Staff Profile</h1>
+        <p>{{ member.department_name or 'Department of Agricultural Economics & Extension' }}</p>
+    </div>
+</section>
+
+<section class="profile-section">
+    <div class="profile-container">
+
+        <a href="{{ url_for('staff_directory') }}" class="btn-back-link" style="margin-bottom:24px; display:inline-flex;">
+            <i class="fas fa-arrow-left"></i> Back to Staff Directory
+        </a>
+
+        <div class="profile-card">
+
+            <div class="profile-header">
+                <div class="profile-photo">
+    {% if member.photo and member.photo != 'default.jpg' %}
+    <img src="{{ url_for('static', filename='images/staff/' + member.photo) }}"
+         style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+    {% else %}
+    <i class="fas fa-user"></i>
+    {% endif %}
+</div>
+                <div class="profile-header-info">
+                    {% if member.is_hod %}
+                    <span class="hod-badge">Head of Department</span>
+                    {% endif %}
+                    <h2>{{ member.full_name }}</h2>
+                    <p class="profile-title">{{ member.title }} &mdash; {{ member.specialization }}</p>
+                    <div class="profile-contacts">
+                        {% if member.email %}<span><i class="fas fa-envelope"></i> {{ member.email }}</span>{% endif %}
+                        {% if member.phone %}<span><i class="fas fa-phone"></i> {{ member.phone }}</span>{% endif %}
+                        {% if member.office_location %}<span><i class="fas fa-map-marker-alt"></i> {{ member.office_location }}</span>{% endif %}
+                    </div>
+                </div>
+                <a href="{{ url_for('staff_download', id=member.id) }}" class="btn-download-profile">
+                    <i class="fas fa-file-pdf"></i> Download Profile
+                </a>
+            </div>
+
+            {% if member.bio %}
+            <div class="profile-block">
+                <h3><i class="fas fa-user-circle"></i> Biography</h3>
+                <p>{{ member.bio }}</p>
+            </div>
+            {% endif %}
+
+            {% if member.qualifications %}
+            <div class="profile-block">
+                <h3><i class="fas fa-graduation-cap"></i> Academic Qualifications</h3>
+                <p>{{ member.qualifications }}</p>
+            </div>
+            {% endif %}
+
+            {% if member.research_interests %}
+            <div class="profile-block">
+                <h3><i class="fas fa-flask"></i> Research Interests</h3>
+                <p>{{ member.research_interests }}</p>
+            </div>
+            {% endif %}
+
+            {% if member.publications %}
+            <div class="profile-block">
+                <h3><i class="fas fa-book"></i> Publications</h3>
+                <p style="white-space: pre-line;">{{ member.publications }}</p>
+            </div>
+            {% endif %}
+
+            {% if courses_taught %}
+            <div class="profile-block">
+                <h3><i class="fas fa-chalkboard-teacher"></i> Courses Taught</h3>
+                <div class="courses-taught-list">
+                    {% for c in courses_taught %}
+                    <span class="course-pill">{{ c.course_code }} &mdash; {{ c.course_title }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if member.orcid %}
+            <div class="profile-block">
+                <h3><i class="fas fa-id-badge"></i> Research ID</h3>
+                <p>{{ member.orcid }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

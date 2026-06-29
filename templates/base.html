@@ -27,28 +27,54 @@
         </div>
 
         <nav class="main-nav">
-    <div class="nav-links">
-        <a href="{{ url_for('home') }}" class="nav-link">
-            <i class="fas fa-home"></i> Home
-        </a>
-        <a href="{{ url_for('staff_directory') }}" class="nav-link">
-            <i class="fas fa-users"></i> Staff Directory
-        </a>
-        <a href="{{ url_for('courseware') }}" class="nav-link">
-            <i class="fas fa-book-open"></i> E-Courseware
-        </a>
-        <a href="{{ url_for('announcements') }}" class="nav-link">
-            <i class="fas fa-bullhorn"></i> Announcements
-        </a>
-        <a href="{{ url_for('contact') }}" class="nav-link">
-            <i class="fas fa-envelope"></i> Contact
-        </a>
-    </div>
-    <a href="/admin" class="btn-admin">
-        <i class="fas fa-lock"></i> Admin Login
-    </a>
-</nav>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
 
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-building"></i> Departments <i class="fas fa-chevron-down" style="font-size:0.7rem; margin-left:3px;"></i>
+                    </a>
+                    <div class="nav-dropdown-content">
+                        <a href="{{ url_for('staff_directory') }}">All Departments</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ url_for('staff_directory') }}?dept=agric-economics">Agricultural Economics & Extension</a>
+                        <a href="{{ url_for('staff_directory') }}?dept=animal-science">Animal Science</a>
+                        <a href="{{ url_for('staff_directory') }}?dept=crop-science">Crop Science</a>
+                        <a href="{{ url_for('staff_directory') }}?dept=soil-land-management">Soil & Land Management</a>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('staff_directory') }}" class="nav-link">
+                    <i class="fas fa-users"></i> Staff Directory
+                </a>
+                <a href="{{ url_for('courseware') }}" class="nav-link">
+                    <i class="fas fa-book-open"></i> E-Courseware
+                </a>
+                <a href="{{ url_for('announcements') }}" class="nav-link">
+                    <i class="fas fa-bullhorn"></i> Announcements
+                </a>
+
+                <div class="nav-dropdown">
+    <a href="#" class="nav-link">
+        <i class="fas fa-compass"></i> Explore <i class="fas fa-chevron-down" style="font-size:0.7rem; margin-left:3px;"></i>
+    </a>
+    <div class="nav-dropdown-content">
+        <a href="{{ url_for('about') }}"><i class="fas fa-info-circle" style="width:18px;"></i> About</a>
+        <a href="{{ url_for('laboratories') }}"><i class="fas fa-flask" style="width:18px;"></i> Laboratories</a>
+        <a href="{{ url_for('officers') }}"><i class="fas fa-id-badge" style="width:18px;"></i> Officers</a>
+        <a href="{{ url_for('gallery') }}"><i class="fas fa-images" style="width:18px;"></i> Gallery</a>
+    </div>
+</div>
+                <a href="{{ url_for('contact') }}" class="nav-link">
+                    <i class="fas fa-envelope"></i> Contact
+                </a>
+            </div>
+            <a href="/admin" class="btn-admin">
+                <i class="fas fa-lock"></i> Admin Login
+            </a>
+        </nav>
     </header>
 
     <main class="main-content">
@@ -61,7 +87,7 @@
                 <h4>Quick Links</h4>
                 <a href="{{ url_for('staff_directory') }}">Staff Directory</a>
                 <a href="{{ url_for('courseware') }}">E-Courseware</a>
-                <a href="#">Announcements</a>
+                <a href="{{ url_for('announcements') }}">Announcements</a>
             </div>
             <div class="footer-section">
                 <h4>Contact Us</h4>
@@ -75,9 +101,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2025 SLU Department of Agricultural Economics & Extension.
-               
-            </p>
+            <p>© 2026 SLU Department of Agricultural Economics & Extension. All Rights Reserved.</p>
         </div>
     </footer>
 

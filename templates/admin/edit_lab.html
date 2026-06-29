@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Laboratory | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-edit"></i> Edit Laboratory</h1>
+        <a href="{{ url_for('admin_laboratories') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Laboratories
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="form-card">
+            <form method="POST" action="{{ url_for('admin_edit_lab', id=lab.id) }}">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Laboratory Name *</label>
+                        <input type="text" name="name" value="{{ lab.name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Department *</label>
+                        <select name="department_id" required>
+                            <option value="">-- Select Department --</option>
+                            {% for d in departments %}
+                            <option value="{{ d.id }}" {{ 'selected' if lab.department_id == d.id else '' }}>
+                                {{ d.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Laboratory Type</label>
+                        <input type="text" name="lab_type" value="{{ lab.lab_type or '' }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Size / Capacity</label>
+                        <input type="text" name="size_capacity" value="{{ lab.size_capacity or '' }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="4">{{ lab.description or '' }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Equipment</label>
+                    <textarea name="equipment" rows="3">{{ lab.equipment or '' }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Technologies / Techniques</label>
+                    <textarea name="technologies" rows="2">{{ lab.technologies or '' }}</textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Update Laboratory
+                    </button>
+                    <a href="{{ url_for('admin_lab_photos', lab_id=lab.id) }}" class="btn-cancel">
+                        <i class="fas fa-images"></i> Manage Photos
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -22,8 +22,16 @@
 
     <div class="dashboard-content">
         <div class="form-card">
-            <form method="POST" action="{{ url_for('admin_edit_staff', id=member.id) }}">
-
+            <form method="POST" action="{{ url_for('admin_edit_staff', id=member.id) }}" enctype="multipart/form-data"></form>
+<div class="form-group">
+    {% if member.photo and member.photo != 'default.jpg' %}
+    <img src="{{ url_for('static', filename='images/staff/' + member.photo) }}"
+         style="width:90px; height:90px; border-radius:50%; object-fit:cover; margin-bottom:10px; border:2px solid #1B5E20;">
+    {% endif %}
+    <label>Staff Photo (passport-style)</label>
+    <input type="file" name="photo" accept=".jpg,.jpeg,.png,.webp">
+    <small style="color:#9E9E9E; font-size:0.78rem;">Leave empty to keep the current photo.</small>
+</div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Full Name *</label>
@@ -82,9 +90,40 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Bio / About</label>
-                    <textarea name="bio" rows="4">{{ member.bio }}</textarea>
-                </div>
+    <label>Bio / About</label>
+    <textarea name="bio" rows="4">{{ member.bio }}</textarea>
+</div>
+
+<div class="form-group">
+    <label>Academic Qualifications</label>
+    <textarea name="qualifications" rows="3"
+        placeholder="e.g. PhD Agricultural Economics (ABU Zaria), MSc..., BSc...">{{ member.qualifications or '' }}</textarea>
+</div>
+
+<div class="form-group">
+    <label>Research Interests</label>
+    <textarea name="research_interests" rows="3"
+        placeholder="e.g. Farm management, rural finance, agricultural policy">{{ member.research_interests or '' }}</textarea>
+</div>
+
+<div class="form-group">
+    <label>Publications</label>
+    <textarea name="publications" rows="5"
+        placeholder="List publications, one per line">{{ member.publications or '' }}</textarea>
+</div>
+
+<div class="form-row">
+    <div class="form-group">
+        <label>Office Location</label>
+        <input type="text" name="office_location"
+               value="{{ member.office_location or '' }}" placeholder="e.g. Block A, Room 12">
+    </div>
+    <div class="form-group">
+        <label>ORCID / Research ID</label>
+        <input type="text" name="orcid"
+               value="{{ member.orcid or '' }}" placeholder="e.g. 0000-0001-2345-6789">
+    </div>
+</div>
 
                 <div class="form-check">
                     <input type="checkbox" name="is_hod" id="is_hod"

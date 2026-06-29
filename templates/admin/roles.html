@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Roles | SLU Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+{% include 'admin/sidebar.html' %}
+<div class="main">
+<div class="topbar">
+<h1><i class="fas fa-id-badge"></i> Manage Roles</h1>
+<a href="{{ url_for('admin_add_role') }}" class="btn-primary-sm"><i class="fas fa-plus"></i> Assign New Role</a>
+</div>
+<div class="dashboard-content">
+{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div class="alert alert-{{ category }}"><i class="fas fa-info-circle"></i> {{ message }}</div>{% endfor %}{% endif %}{% endwith %}
+{% if roles %}
+<div class="table-card">
+<table>
+<thead>
+<tr><th>#</th><th>Staff Member</th><th>Role</th><th>Department</th><th>Level</th><th>Session</th><th>Status</th><th>Actions</th></tr>
+</thead>
+<tbody>
+{% for r in roles %}
+<tr>
+<td>{{ loop.index }}</td>
+<td><strong>{{ r.full_name }}</strong></td>
+<td>{{ r.role_name }}</td>
+<td>{{ r.department_name }}</td>
+<td>{{ r.level or '-' }}</td>
+<td>{{ r.academic_session or '-' }}</td>
+<td>{% if r.is_active %}<span class="hod-pill">Active</span>{% else %}<span class="hod-pill" style="background:#F5F5F5;color:#9E9E9E;border-color:#E0E0E0;">Inactive</span>{% endif %}</td>
+<td>
+<div class="action-btns">
+<a href="{{ url_for('admin_toggle_role', id=r.id) }}" class="btn-edit"><i class="fas fa-toggle-on"></i> Toggle</a>
+<a href="{{ url_for('admin_delete_role', id=r.id) }}" class="btn-delete" onclick="return confirm('Remove this role assignment?')"><i class="fas fa-trash"></i> Delete</a>
+</div>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">
+<i class="fas fa-id-badge"></i>
+<h3>No Roles Assigned Yet</h3>
+<p>Click "Assign New Role" to add your first one.</p>
+</div>
+{% endif %}
+</div>
+</div>
+</body>
+</html>

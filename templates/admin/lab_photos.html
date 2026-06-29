@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Photos | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-images"></i> Photos &mdash; {{ lab.name }}</h1>
+        <a href="{{ url_for('admin_laboratories') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Laboratories
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas fa-info-circle"></i> {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Upload Form -->
+        <div class="form-card" style="margin-bottom:24px;">
+            <form method="POST" action="{{ url_for('admin_lab_photos', lab_id=lab.id) }}"
+                  enctype="multipart/form-data">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Choose Photo *</label>
+                        <input type="file" name="photo" accept=".jpg,.jpeg,.png,.webp" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Caption (optional)</label>
+                        <input type="text" name="caption" placeholder="e.g. Centrifuge in use">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-upload"></i> Upload Photo
+                </button>
+            </form>
+        </div>
+
+        <!-- Existing Photos -->
+        {% if photos %}
+        <div class="lab-photo-admin-grid">
+            {% for p in photos %}
+            <div class="lab-photo-admin-item">
+                <img src="{{ url_for('static', filename='images/labs/' + p.photo_path) }}" alt="">
+                <div class="lab-photo-admin-caption">{{ p.caption or 'No caption' }}</div>
+                <a href="{{ url_for('admin_delete_lab_photo', photo_id=p.id, lab_id=lab.id) }}"
+                   class="btn-delete" style="width:100%; justify-content:center; margin-top:8px;"
+                   onclick="return confirm('Delete this photo?')">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-images"></i>
+            <h3>No Photos Yet</h3>
+            <p>Upload your first photo using the form above.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

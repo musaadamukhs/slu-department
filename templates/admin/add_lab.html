@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Laboratory | SLU Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+{% include 'admin/sidebar.html' %}
+
+<div class="main">
+    <div class="topbar">
+        <h1><i class="fas fa-plus-circle"></i> Add New Laboratory</h1>
+        <a href="{{ url_for('admin_laboratories') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Laboratories
+        </a>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="form-card">
+            <form method="POST" action="{{ url_for('admin_add_lab') }}">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Laboratory Name *</label>
+                        <input type="text" name="name"
+                               placeholder="e.g. Soil and Land Management Laboratory" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Department *</label>
+                        <select name="department_id" required>
+                            <option value="">-- Select Department --</option>
+                            {% for d in departments %}
+                            <option value="{{ d.id }}">{{ d.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Laboratory Type</label>
+                        <input type="text" name="lab_type"
+                               placeholder="e.g. Soil Science / Chemistry Laboratory">
+                    </div>
+                    <div class="form-group">
+                        <label>Size / Capacity</label>
+                        <input type="text" name="size_capacity"
+                               placeholder="e.g. Mid-size, 30-seat capacity">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="4"
+                        placeholder="What this lab is used for, who uses it, what kind of work happens here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Equipment</label>
+                    <textarea name="equipment" rows="3"
+                        placeholder="List major equipment, separated by commas"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Technologies / Techniques</label>
+                    <textarea name="technologies" rows="2"
+                        placeholder="e.g. Digital pH metering, centrifugation, distillation"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Save Laboratory
+                    </button>
+                    <a href="{{ url_for('admin_laboratories') }}" class="btn-cancel">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

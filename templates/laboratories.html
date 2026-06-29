@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Laboratories | SLU Agric{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="page-hero-content">
+        <h1><i class="fas fa-flask"></i> Our Laboratories</h1>
+        <p>Modern facilities supporting practical training and research</p>
+    </div>
+</section>
+
+<section class="filter-section">
+    <div class="filter-container">
+        <div class="filter-buttons">
+            <a href="{{ url_for('laboratories') }}"
+               class="filter-btn {{ 'active' if not current_dept else '' }}">
+                All Departments
+            </a>
+            {% for d in departments %}
+            <a href="{{ url_for('laboratories') }}?dept={{ d.slug }}"
+               class="filter-btn {{ 'active' if current_dept and current_dept.slug == d.slug else '' }}">
+                {{ d.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="lab-section">
+    <div class="lab-container">
+
+        {% if labs %}
+        <div class="lab-grid">
+            {% for lab in labs %}
+            <a href="{{ url_for('laboratory_detail', id=lab.id) }}" class="lab-card">
+                <div class="lab-card-photo"
+                     style="background-image: url('{{ url_for('static', filename='images/labs/' + lab.cover_photo) }}');">
+                </div>
+                <div class="lab-card-body">
+                    <h3>{{ lab.name }}</h3>
+                    <p class="lab-type"><i class="fas fa-tag"></i> {{ lab.lab_type }}</p>
+                    {% if lab.size_capacity %}
+                    <p class="lab-size"><i class="fas fa-ruler-combined"></i> {{ lab.size_capacity }}</p>
+                    {% endif %}
+                    <span class="lab-view-link">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-flask"></i>
+            <h3>No laboratories listed yet</h3>
+            <p>Check back soon for facility information.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

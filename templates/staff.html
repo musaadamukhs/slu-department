@@ -43,11 +43,16 @@
 <!-- ===== HOD SPOTLIGHT ===== -->
 <section class="hod-section">
     {% if hod %}
-    <div class="hod-card">
-        <div class="hod-photo-area">
-            <div class="hod-photo-placeholder">
-                <i class="fas fa-user-tie"></i>
-            </div>
+    <div class="hod-photo-area">
+    <div class="hod-photo-placeholder">
+        {% if hod.photo and hod.photo != 'default.jpg' %}
+        <img src="{{ url_for('static', filename='images/staff/' + hod.photo) }}"
+             style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+        {% else %}
+        <i class="fas fa-user-tie"></i>
+        {% endif %}
+    </div>
+</div>
         </div>
         <div class="hod-info">
             <span class="hod-badge">Head of Department</span>
@@ -78,9 +83,14 @@
             {% for member in staff_list %}
             <div class="staff-card" data-rank="{{ member.staff_rank }}">
                 <div class="staff-card-top">
-                    <div class="staff-photo-placeholder">
-                        <i class="fas fa-user"></i>
-                    </div>
+    <div class="staff-photo-placeholder">
+        {% if member.photo and member.photo != 'default.jpg' %}
+        <img src="{{ url_for('static', filename='images/staff/' + member.photo) }}"
+             style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+        {% else %}
+        <i class="fas fa-user"></i>
+        {% endif %}
+    </div>
                     <span class="rank-badge rank-{{ member.staff_rank }}">
                         {{ member.title }}
                     </span>
@@ -96,11 +106,20 @@
                         <p><i class="fas fa-phone"></i> {{ member.phone }}</p>
                     </div>
                 </div>
+                <div class="hod-contacts">
+    <span><i class="fas fa-envelope"></i> {{ hod.email }}</span>
+    <span><i class="fas fa-phone"></i> {{ hod.phone }}</span>
+</div>
+{% if hod %}
+<a href="{{ url_for('staff_profile', id=hod.id) }}" class="btn-view-profile" style="display:inline-flex; width:auto; margin-top:14px;">
+    View Full Profile <i class="fas fa-arrow-right"></i>
+</a>
+{% endif %}
                 <div class="staff-card-footer">
-                    <a href="#" class="btn-view-profile">
-                        View Profile <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+    <a href="{{ url_for('staff_profile', id=member.id) }}" class="btn-view-profile">
+        View Profile <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
             </div>
             {% endfor %}
 

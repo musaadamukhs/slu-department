@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}About | SLU Agric Economics & Extension{% endblock %}
+
+{% block content %}
+
+<!-- ===== PAGE HERO ===== -->
+<section class="page-hero">
+    <div class="page-hero-content">
+        <h1><i class="fas fa-info-circle"></i> About Us</h1>
+        <p>Our history, philosophy, mission and vision</p>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="about-container">
+
+        <!-- ===== DEPARTMENT SWITCH TABS ===== -->
+        <div class="about-tabs">
+            <a href="{{ url_for('about') }}"
+               class="about-tab {{ 'active' if not current_dept else '' }}">
+                <i class="fas fa-university"></i> Faculty Overview
+            </a>
+            {% for d in departments %}
+            <a href="{{ url_for('about') }}?dept={{ d.slug }}"
+               class="about-tab {{ 'active' if current_dept and current_dept.slug == d.slug else '' }}">
+                {{ d.name }}
+            </a>
+            {% endfor %}
+        </div>
+
+        {% if not current_dept %}
+        <!-- ===== FACULTY OVERVIEW ===== -->
+        <div class="about-card">
+            <div class="about-card-header">
+                <i class="fas fa-university"></i>
+                <h2>{{ faculty.name }}</h2>
+            </div>
+
+            {% if faculty.history %}
+            <div class="about-block">
+                <h3><i class="fas fa-landmark"></i> Our History</h3>
+                <p>{{ faculty.history }}</p>
+            </div>
+            {% endif %}
+
+            <div class="vision-mission-grid">
+                {% if faculty.vision %}
+                <div class="vm-card vision">
+                    <div class="vm-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Our Vision</h3>
+                    <p>{{ faculty.vision }}</p>
+                </div>
+                {% endif %}
+
+                {% if faculty.mission %}
+                <div class="vm-card mission">
+                    <div class="vm-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Our Mission</h3>
+                    <p>{{ faculty.mission }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if faculty.accreditation_status %}
+            <div class="accreditation-badge">
+                <i class="fas fa-certificate"></i>
+                <span>{{ faculty.accreditation_status }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        {% else %}
+        <!-- ===== DEPARTMENT-SPECIFIC ABOUT ===== -->
+        <div class="about-card">
+            <div class="about-card-header">
+                <i class="fas fa-graduation-cap"></i>
+                <h2>{{ current_dept.name }}</h2>
+            </div>
+
+            <div class="about-meta">
+                {% if current_dept.year_established %}
+                <span><i class="fas fa-calendar-alt"></i> Established {{ current_dept.year_established.strftime('%Y') }}</span>
+                {% endif %}
+                {% if hod %}
+                <span><i class="fas fa-user-tie"></i> HOD: {{ hod.full_name }}</span>
+                {% endif %}
+            </div>
+
+            {% if current_dept.philosophy %}
+            <div class="about-block">
+                <h3><i class="fas fa-lightbulb"></i> Our Philosophy</h3>
+                <p>{{ current_dept.philosophy }}</p>
+            </div>
+            {% endif %}
+
+            {% if current_dept.vision or current_dept.mission %}
+            <div class="vision-mission-grid">
+                {% if current_dept.vision %}
+                <div class="vm-card vision">
+                    <div class="vm-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Our Vision</h3>
+                    <p>{{ current_dept.vision }}</p>
+                </div>
+                {% endif %}
+
+                {% if current_dept.mission %}
+                <div class="vm-card mission">
+                    <div class="vm-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Our Mission</h3>
+                    <p>{{ current_dept.mission }}</p>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="about-empty">
+                <i class="fas fa-hourglass-half"></i>
+                <p>Detailed vision and mission information for this department is being finalized and will be published soon.</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
